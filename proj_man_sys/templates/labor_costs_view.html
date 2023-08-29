@@ -1,0 +1,46 @@
+{% extends 'base.html' %}
+{% block content %} 
+{% include 'labor_costs_base_links.html'%}
+
+<h1 class="h1-center">Просмотр трудозатрат</h1>
+
+{% if labor_costs.count > 0%}
+<hr>
+<table class="table-labor">
+    <thead>
+      <th>Название</th>
+      <th>Проект</th>
+      <th>Дата</th>
+      <th>Часы, мин</th>
+      <th>Деятельность</th>
+      <th>Исполнитель</th>
+      <th style = 'width: 10%'>Коммент</th>
+      <th>Действие</th>
+    </thead>
+    {% for labor in labor_costs %}
+    <tr>
+      <td>{{labor.task.name}}</td>
+      <td>{{labor.task.project.name}}</td>
+      <td>{{labor.date}}</td>
+      <td>{{labor.hours}}</td>
+      <td>{{labor.activity}}</td>
+      <td>{{labor.executor}}</td>
+      <td>{{labor.comment}}</td>
+      
+    {% if admin == labor.executor %}
+      <td style="text-align: center">
+        <div class = 'choice'>
+       <a href="{% url "delete_labor" labor.id %}">Удалить</a>
+      </div></td>
+    {% elif admin != labor.executor %}
+       <td>-</td>
+       {% endif %}
+    </tr>
+
+    {% endfor %}
+  </table>
+
+  {% else %}
+  <p class = 'warning'>Трудозатраты отсутствуют </p>
+{% endif %}
+{% endblock content%}

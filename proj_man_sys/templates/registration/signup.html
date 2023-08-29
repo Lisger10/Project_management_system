@@ -1,0 +1,23 @@
+{% extends 'base_registration.html' %} {% block content%}
+<div class = 'registration'>
+<h1>Регистрация</h1>
+<form method="post">
+  {% csrf_token %}
+  <div class = 'form-registration'>
+  <div class = 'form-reg1'>
+     <label>Идентификатор (b):</label><p>{{form.username}}</p>
+    <label>Фамилия:</label><p>{{form.last_name}}</p>
+    <label>Имя:</label><p>{{form.first_name}}</p> 
+  </div>
+ <div class = 'form-reg2'>
+  <label>Почта:<p></label>{{form.email}}</p>
+  <label>Пароль:<p></label>{{form.password1}}</p>
+  <label>Подтверждение пароля:<p></label>{{form.password2}}</p>
+ </div>
+</div>
+<div style = 'text-align:left'>{{form.password2.errors}}</div>
+<div style = 'text-align:left'>{{form.username.errors}}</div>
+  <button  class="btn btn-success ml-2" type="submit">Подтвердить</button>
+</form>
+</div>
+{% endblock content %}

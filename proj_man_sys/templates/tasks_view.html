@@ -1,0 +1,118 @@
+{% extends 'base.html' %}
+{% block content %} 
+{% include 'tasks_base_links.html'%}
+
+
+<h1 class="h1-center">Просмотр задач</h1>
+<hr>
+
+{% url 'view_created_tasks' as view_created_tasks %}
+{% url 'view_available_tasks' as view_available_tasks %}
+{% url 'view_appointed_tasks' as view_appointed_tasks %}
+
+{% if request.path == view_created_tasks %}
+
+<h3 class="h3-center">Созданные задачи</h3>
+
+{% if created_tasks.count > 0 %}
+<table class="table-task">
+  <thead>
+    <th>Название</th>
+    <th>Дата начала</th>
+    <th>Дата завершения</th>
+    <th>Проект</th>
+    <th>Статус</th>
+    <th>Админ</th>
+  </thead>
+  {% for task in created_tasks %}
+  <tr>
+    <td>{{task.name}}</td>
+    <td>{{task.start_date}}</td>
+    <td>{{task.end_date}}</td>
+    <td>{{task.project}}</td>
+    <td>{{task.status}}</td>
+    <td>{{task.admin}}</td>
+    
+    <td style="text-align: center">
+      <div class = 'choice'>
+      <a href="{% url "info_task" task.id %}">Подробнее </a> 
+      | <a href="{% url "change_admin_task" task.id %}">Изменить</a> | <a href="{% url "delete_task" task.id %}">Удалить</a>
+    </div></td>
+  </tr>
+  {% endfor %}
+</table>
+{% elif created_tasks.count == 0 %}
+<p class = 'warning'>Созданные задачи отсутствуют </p>
+{% endif %}
+
+
+{% elif request.path == view_available_tasks %}
+<h3 class="h3-center">Доступные задачи</h3>
+
+{% if available_tasks.count > 0 %}
+<table class="table-task">
+  <thead>
+    <th>Название</th>
+    <th>Дата начала</th>
+    <th>Дата завершения</th>
+    <th>Проект</th>
+    <th>Статус</th>
+    <th>Админ</th>
+  </thead>
+  {% for task in  available_tasks %}
+  <tr>
+    <td>{{task.name}}</td>
+    <td>{{task.start_date}}</td>
+    <td>{{task.end_date}}</td>
+    <td>{{task.project}}</td>
+    <td>{{task.status}}</td>
+    <td>{{task.admin}}</td>
+    <td style="text-align: center"> <div class = 'choice'> 
+      <a href="{% url "info_task" task.id %}">Подробнее </a> 
+    </div></td> 
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+<p class = 'warning'>Доступные задачи отсутствуют </p>
+{% endif %}
+
+
+  
+{% elif request.path == view_appointed_tasks %}
+<h3 class="h3-center">Назначенные задачи</h3>
+
+{% if appointed_tasks.count > 0 %}
+<table class="table-task">
+  <thead>
+    <th>Название</th>
+    <th>Дата начала</th>
+    <th>Дата завершения</th>
+    <th>Проект</th>
+    <th>Статус</th>
+    <th>Админ</th>
+  </thead>
+  {% for task in appointed_tasks %}
+  <tr>
+    <td>{{task.name}}</td>
+    <td>{{task.start_date}}</td>
+    <td>{{task.end_date}}</td>
+    <td>{{task.project}}</td>
+    <td>{{task.status}}</td>
+    <td>{{task.admin}}</td>
+    
+    <td style="text-align: center"><div class = 'choice'>
+       <a href="{% url "info_task" task.id %}">Подробнее </a> 
+      | <a href="{% url "change_task" task.id %}">Изменить</a> 
+    </div>
+    </td>
+  
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+<p class = 'warning'>Назначенные задачи отсутствуют </p>
+{% endif %}
+{% endif %}
+
+{% endblock content %} 

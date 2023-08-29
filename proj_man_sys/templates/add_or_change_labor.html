@@ -1,0 +1,25 @@
+{% extends 'base.html' %} {% block content %} 
+{% include 'labor_costs_base_links.html'%}
+
+<h3 class="add-form">Заполните форму</h3>
+<hr >
+<form method="POST">
+  {%csrf_token%}
+  <div class="form-labor">
+    <div class="form-labor1">
+      <label>Часов:</label>
+      <p>{{form.hours}}</p>
+      <label>Комментарий:</label>
+      <p>{{form.comment}}</p>
+    </div>
+    <div class="form-labor2">
+      <label>Задача:</label>
+      <p>{{form.task}}</p>
+      <label>Деятельность:</label>
+      <p>{{form.activity}}</p>
+    </div>
+  </div>
+ <div class = 'btn-form'> <input  class="btn btn-success ml-2" type="submit" value="Отправить" /></div>
+</form>
+
+{% endblock content%}

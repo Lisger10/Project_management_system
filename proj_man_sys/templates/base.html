@@ -1,0 +1,72 @@
+{% load static %}
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet"  type="text/css" href="{% static "css/styles.css" %}" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    
+  </head>
+  
+  <body>
+    {% if user.is_authenticated %}
+    <header>
+        <div class ='header'>
+        <a href="#">Вы вошли как {{user.username}}</a> |
+        <a href='{% url 'logout' %}'>Выйти </a>
+        </div>
+    </header>
+
+   
+      <ul class="nav justify-content-center" style = 'background-color: green'>
+        <li class="nav-item">
+          <a class="nav-link" style ='color:white' href="{% url 'view_proj' %}">Проекты</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" style ='color:white' href="{% url 'view_created_tasks' %}">Задачи</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" style ='color:white' href="{% url 'view_users' %}">Пользователи</a>
+        </li>
+        <li class="nav-item" >
+          <a class="nav-link" style ='color:white' href="{% url 'view_labor_costs' %}">Трудозатраты</a>
+        </li>
+      </ul>
+
+    
+     <main>
+    {%block content%}  
+    {%endblock content%}
+  </main>
+  <hr class = 'last-hr'>
+    <div class="container">
+      <footer class="py-10 my-4">
+        <ul class="nav justify-content-center border-bottom pb-3 mb-3">
+          <li class="nav-item"><a href="{% url 'view_proj' %}" class="nav-link px-2 text-muted">Проекты</a></li>
+          <li class="nav-item"><a href="{% url 'view_created_tasks' %}" class="nav-link px-2 text-muted">Задачи</a></li>
+          <li class="nav-item"><a href="{% url 'view_users' %}" class="nav-link px-2 text-muted">Пользователи</a></li>
+          <li class="nav-item"><a href="{% url 'view_labor_costs' %}" class="nav-link px-2 text-muted">Трудозатраты</a></li>
+        </ul>
+        <div style = 'background-color: green'>
+        <p class="text-center " style = 'color:white'> &copy; 2023 GerLis. All rights reserved.</p>
+        </div>
+      </footer>
+    </div>
+    
+  {% else %}
+  {% block registration%}
+  <div class = 'container'>
+    <div class ='start-page'>
+    <h5>Для дальнейших действий вам необходимо <br>войти в аккаунт или зарегистрироваться </h5>
+    </div>
+    <div class = 'choice'><a href = '{% url 'login' %}'>Войти </a> |<a href = '{% url 'signup' %}'> Регистрация </a>  </div>
+</div>
+  {% endblock registration%}
+  {% endif %}
+  
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js" integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js" integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF" crossorigin="anonymous"></script>
+</body>
+</html>

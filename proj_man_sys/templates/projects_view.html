@@ -1,0 +1,59 @@
+{% extends 'base.html' %}
+{% block content %} 
+{% include 'projects_base_links.html'%}
+<h1 class="h1-center">Просмотр проектов</h1>
+<hr>
+<h3 class="h3-center">Созданные проекты</h3>
+{% if projects.count > 0 %}
+<table class="table-proj">
+  <thead>
+    <th>Название</th>
+    <th>Дата начала</th>
+    <th>Дата завершения</th>
+    <th>Статус</th>
+  </thead>
+  {% for project in projects %}
+  <tr>
+    <td>{{project.name}}</td>
+    <td>{{project.start_date}}</td>
+    <td>{{project.end_date}}</td>
+    <td>{{project.perfomance_status}}</td>
+    <td style="text-align: center"><div class = 'choice'>
+     <a href="{% url "info_proj" project.id %}">Подробнее </a> 
+      | <a href="{% url "change_proj" project.id %}">Изменить</a> | <a href="{% url "delete_proj" project.id %}">Удалить</a>
+    </div></td>
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+<p class = 'warning'>Проекты отсутствуют </p>
+{% endif %}
+
+<h3 class="h3-center">Доступные проекты</h3>
+{% if available_projects.count > 0%}
+<table class="table-proj">
+  <thead>
+    <th>Название</th>
+    <th>Дата начала</th>
+    <th>Дата завершения</th>
+    <th>Статус</th>
+    <th>Админ проекта</th>
+  </thead>
+  {% for project in available_projects %}
+  <tr>
+    <td>{{project.name}}</td>
+    <td>{{project.start_date}}</td>
+    <td>{{project.end_date}}</td>
+    <td>{{project.perfomance_status}}</td>
+    <td>{{project.admin}}</td>
+  <td style="text-align: center"><div class = 'choice'>
+      <a href="{% url "info_proj" project.id %}">Подробнее </a></td>
+  </div>
+  </tr>
+  {% endfor %}
+</table>
+{% else %}
+<p class = 'warning'>Проекты отсутствуют </p>
+{% endif %}
+
+{% endblock content %}

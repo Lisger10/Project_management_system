@@ -1,0 +1,29 @@
+{% extends 'base.html' %} {% block content %} 
+{% include 'projects_base_links.html'%}
+<h1 class="h1-center">Аналитика проектов</h1>
+<hr />
+
+<div style="text-align: center">
+  <h5 style = 'margin-bottom:40px'>Выберите дату для отображения аналитики по проектам </h5>
+  <form action="." method="post">
+    {% csrf_token %} {{form}}
+    <div class = 'btn-form-analytics'> <input  class="btn btn-success ml-2" type="submit" value="Отправить" /></div>
+  </form>
+  <div>
+
+    {% if graph %}
+    <div class="proj-graph">
+      <h3 class="h3-center">График Выполнения проектов</h3>
+      <hr />
+      {% autoescape off %}
+      <div style="padding-left: 100px">{{graph}}</div>
+      {% endautoescape %}
+    </div>
+    <div class="proj-diagr" style="width: 800px">
+      <h3 class="h3-center">Диаграмма выполнения проектов</h3>
+      <hr />
+      {% autoescape off %} {{pie_chart}}{% endautoescape %}
+    </div>
+    {% endif%} {% endblock content %}
+  </div>
+</div>

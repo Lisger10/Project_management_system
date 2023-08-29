@@ -1,0 +1,31 @@
+
+{% extends 'base.html' %} 
+{% block content %}
+{% include 'tasks_base_links.html'%}
+
+<h3 class="h3-center">Информация о задаче</h3>
+<hr>
+
+<div class = 'main-info-task'>
+<div class = 'task-info'>
+  <p><span class ='p-color'>Название задачи: </span>{{task.name}}</p>
+  <p><span class ='p-color'>Дата начала: </span>{{task.start_date}}</p>
+  <p><span class ='p-color'>Дата завершения: </span>{{task.end_date}}</p>
+  <p><span class ='p-color'>Статус задачи:</span> {{task.status}}</p>
+  <p><span class ='p-color'>Приоритет задачи: </span>{{task.priority}}</p>
+  <p><span class ='p-color'>Проект:</span> {{task.project}}</p>
+  <p><span class ='p-color'>Фактическая дата завершения:</span> {{task.perfomance_date}}</p>
+  <p><span class ='p-color'>Администратор проекта:</span> {{task.admin}} </p>
+  
+</div>
+<div class = 'task-users'>
+  <h5>Исполнители задач:</h5>
+  {% for user in users %}
+  <p><span class ='p-color'></span> -{{user}} </p>
+  {% endfor %}
+</div>
+</div>
+<div class = 'choice-info' ><a href ="{% url "change_task" task.id %}">Изменить</a> | <a href="{% url "delete_task" task.id %}">Удалить</a> </div>
+
+
+{% endblock content%}

@@ -1,0 +1,33 @@
+{% extends 'base.html' %} {% block content %}
+{% include 'tasks_base_links.html'%}
+<h3 class = 'add-form'>Заполните форму </h3>
+<h5 class = 'answer'> {{answer}}</h5>
+<form method="POST">
+  {%csrf_token%} 
+  <div class="form-task">
+    <div class="form-task1">
+      <label>Название:</label>
+      <p>{{form.name}}</p>
+      <label>Дата начала:</label>
+      <p>{{form.start_date}}</p>
+      <label>Дата окончания:</label>
+      <p>{{form.end_date}}</p>
+      <label>Статус:</label>
+      <p>{{form.status}}</p>
+      <label>Проект:</label>
+      <p>{{form.project}}</p>
+    </div>
+    <div class="form-task2">
+      <label>Назначить:</label>
+      <p>{{form.users }}</p>
+      <label>Факт. дата окончания:</label>
+      <p>{{form.perfomance_date}}</p>
+      <label>Приоритет:</label>
+      <p>{{form.priority}}</p>
+    </div>
+  </div>
+  <div class = 'btn-form'><input type="submit" class="btn btn-success ml-2" value="Отправить" /> </div>
+</form>
+
+
+{% endblock content%}

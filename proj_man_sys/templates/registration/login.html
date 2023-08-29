@@ -1,0 +1,13 @@
+{% extends 'base_registration.html' %}
+ {% block content%}
+ <div class = 'enter'>
+<h1 class = 'login'>Вход</h1>
+<form method="post">
+  {% csrf_token %} 
+  <label>Идентификатор (b):</label><p>{{form.username}}</p>
+  <label>Пароль:<p></label>{{form.password}}</p>
+  <button class="btn btn-success ml-2"  type="submit">Войти</button>
+</form>
+<p><a href = "{% url 'password_reset' %}"> Забыли пароль?  </a></p>
+</div>
+{% endblock content%}

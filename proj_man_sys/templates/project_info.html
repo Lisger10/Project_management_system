@@ -1,0 +1,46 @@
+
+{% extends 'base.html' %} 
+{% block content %}
+{% include 'projects_base_links.html'%}
+
+<h3 class="h3-center">Информация о проекте</h3>
+<hr>
+
+<div class = 'main-info-proj' >
+
+  <div class = 'project-users'>
+    <h5>Пользователи проекта:</h5>
+    {% for user in users %}
+    <p>-{{user.last_name}} {{user.first_name}} </p>
+    {% endfor %}
+  </div>
+
+  <div class = 'project-info'>
+  <p><span class ='p-color'>Название проекта:</span> {{project.name}}</p>
+  <p><span class ='p-color'>Дата начала:</span> {{project.start_date}}</p>
+  <p><span class ='p-color'>Дата завершения:</span> {{project.end_date}}</p>
+  <p><span class ='p-color'>Статус проекта:</span> {{project.perfomance_status}}</p>
+  <p><span class ='p-color'>Фактическая дата завершения:</span> {{project.perfomance_date}}</p>
+  <p><span class ='p-color'>Администратор проекта:</span> {{user.last_name}} {{user.first_name}} </p>
+  <p><span class ='p-color'>Описание:</span> {{project.description}} </p>
+</div>
+
+<div class = 'project-tasks'>
+  <h5>Задачи проекта:</h5>
+  {% for task in tasks %}
+  <p>-{{task.name}} </p>
+  {% endfor %}
+</div>
+</div>
+
+<div class = 'choice-info' ><a href="{% url "change_proj" project.id %}">Изменить</a> | <a href="{% url "delete_proj" project.id %}">Удалить</a> </div>
+
+<hr>
+
+{% if gant_chart == 'Задачи отсутствуют' %}
+<h3 style = 'color:red; text-align: center'>Нет задач</h3>
+{% else %}
+<div class = 'gant'>{% autoescape off %} {{gant_chart}}{% endautoescape %}</div>
+{% endif %}
+
+{% endblock content%}
