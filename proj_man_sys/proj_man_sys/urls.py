@@ -14,4 +14,4 @@ urlpatterns = [
     path('tasks/', include('tasks.urls')),
     path('labor_costs/', include('labor_costs.urls')),
     path('users/',  include('users.urls')),
-] + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
+] 

@@ -1,8 +1,9 @@
 {% extends 'base.html' %} {% block content %} 
 {% include 'labor_costs_base_links.html'%}
 
-<h3 class="add-form">Заполните форму</h3>
+<h3 class="add-form1">Заполните форму</h3>
 <hr >
+<h5 class = 'answer'> {{error_message}}</h5>
 <form method="POST">
   {%csrf_token%}
   <div class="form-labor">

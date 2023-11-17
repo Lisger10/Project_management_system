@@ -6,8 +6,12 @@ class CreateProjectForm(forms.ModelForm):
     class Meta:
         model = Projects
         exclude = ["admin"]
-
-
+    def __init__(self, *args, **kwargs):
+        super(CreateProjectForm, self).__init__(*args, **kwargs)
+        self.fields['start_date'].widget.attrs['placeholder'] = 'dd.mm.yyyy'
+        self.fields['end_date'].widget.attrs['placeholder'] = 'dd.mm.yyyy'
+        self.fields['perfomance_date'].widget.attrs['placeholder']= 'dd.mm.yyyy'
+    
 
 class ChooseValuesForm(forms.Form):
     MONTH_CHOICES = (('Январь', 'Январь'),

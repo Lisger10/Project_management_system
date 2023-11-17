@@ -20,7 +20,7 @@
     border-collapse: collapse;
     width: 80%;
     margin: auto;
-    border: 1px solid black;
+    border: 2px solid black;
     margin-top: 10px;
   }
 
@@ -29,21 +29,18 @@
   }
 
   .table-proj td, .table-task td, .table-user td, .table-labor td {
-    border: 1px solid black;
+    border: 2px solid black;
     text-align: center;
     padding: 8px;
+    font-weight: 400;
   }
 
-  .table-user td {
-    border: 2px solid black;
-  }
   .table-proj th, .table-task th, .table-user th, .table-labor th {
     text-align: center;
     padding: 3px;
-  }
-  .table-user th {
     border: 2px solid black;
   }
+  
   
   .table-proj  tr:nth-child(even) {
     background-color: #dddddd;
@@ -170,19 +167,19 @@ a:hover {
   margin-top: 20px;
 }
 .task-info {
-  background-color: #ebe9e9;
+  background-color: #f8f9fa;
   width: 40%;
   border-style: solid;
   border-color: rgb(62, 58, 58);
-  border-width: 1px;
   margin-left: 18%;
+  border-width: 2px;
 }
 .task-users {
-  background-color: #ebe9e9;
+  background-color: #f8f9fa;
   width: 20%;
   border-style: solid;
   border-color: rgb(62, 58, 58);
-  border-width: 1px;
+  border-width: 2px;
   margin-left: 2%;
 }
 
@@ -257,8 +254,15 @@ p.warning {
 
 .add-form {
   text-align: center;
-  color: green
+  color: green;
 }
+
+.add-form1 {
+  text-align: center;
+  color: green;
+  margin-top: 18px;
+}
+
 
 .answer {
   text-align: center;
@@ -267,7 +271,7 @@ p.warning {
 
 .form-labor{
   display: flex;
-  background-color: rgb(248, 248, 248);
+  background-color: #f8f9fa;
   justify-content: center
 }
 
@@ -310,7 +314,7 @@ input, select {
 
 .form-task {
 display: flex;
-background-color: rgb(248, 248, 248);
+background-color: #f8f9fa;
 justify-content: center }
 
 .form-task2 {
@@ -432,3 +436,21 @@ justify-content: center }
   padding-left: 2%;
   font-weight: 600;
 }
+
+.page_text {
+  text-align: center;
+  margin-top: 5px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.page-item .page-link {
+  color: green;
+  border-color: green;
+}
+
+.page-item .page-link:hover {
+  color: green;
+  border-color: green;
+}
+

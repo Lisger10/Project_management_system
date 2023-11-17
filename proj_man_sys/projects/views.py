@@ -12,6 +12,7 @@ import plotly.figure_factory as ff
 import numpy as np
 from django.contrib.auth.models import User
 from django.shortcuts import redirect
+from django.core.paginator import Paginator
 
 
 def add_proj(request):
@@ -20,7 +21,8 @@ def add_proj(request):
         if form.is_valid():
             form.save()
             project = Projects.objects.latest("id")
-            project.admin = request.user.last_name + " " + request.user.first_name
+            if project.admin == 'user':
+                project.admin = request.user.last_name + " " + request.user.first_name
             project.save()
             answer = "Проект успешно создан"
             return render(
@@ -37,115 +39,128 @@ def add_proj(request):
 
 
 def view_proj(request):
-    projects = Projects.objects.all().filter(
-        admin=request.user.last_name + " " + request.user.first_name
-    )
-    available_projects = Projects.objects.all().filter(users=request.user.username)
-    return render(
-        request,
-        "projects_view.html",
-        {"projects": projects, "available_projects": available_projects},
-    )
+    if not request.user.is_anonymous:
+        projects = Projects.objects.all().filter(
+        admin=request.user.last_name + " " + request.user.first_name )
+        available_projects = Projects.objects.all().filter(users=request.user.username)
+        return render(
+        request,"projects_view.html", {"projects": projects,
+                                        "available_projects": available_projects},)
+    else:
+        return redirect('add_or_change_proj')
+
 
 
 def info_proj(request, id):
-    try:
-        project = Projects.objects.get(id=id)
-        users = User.objects.all().filter(projects__id=project.id)
-        tasks = Task.objects.all().filter(project_id=project.id)
-        if tasks.count() >= 1:
-            gant_chart = create_gant(tasks)
-        else:
-            gant_chart = "Задачи отсутствуют"
-        return render(
-            request,
-            "project_info.html",
-            {
-                "project": project,
-                "tasks": tasks,
-                "users": users,
-                "gant_chart": gant_chart,
-            },
-        )
-    except Projects.DoesNotExist:
-        return HttpResponseNotFound("<h1>Project is not found </h1>")
+    if not request.user.is_anonymous:
+        try:
+            project = Projects.objects.get(id=id)
+            users = User.objects.all().filter(projects__id=project.id)
+            tasks = Task.objects.all().filter(project_id=project.id)
+            if tasks.count() >= 1:
+                gant_chart = create_gant(tasks)
+            else:
+                gant_chart = "Задачи отсутствуют"
+            return render(
+                request,
+                "project_info.html",
+                {
+                    "project": project,
+                    "tasks": tasks,
+                    "users": users,
+                    "gant_chart": gant_chart,
+                },
+            )
+        except Projects.DoesNotExist:
+            return HttpResponseNotFound("<h1 class = 'not-found'> Project is not found </h1>")
+    else:
+         return redirect('add_or_change_proj')
+
+        
 
 
 def change_proj(request, id):
-    try:
-        project = Projects.objects.get(id=id)
-        if request.method == "POST":
-            form = CreateProjectForm(request.POST, instance=project)
-            if form.is_valid():
-                form.save()
-                answer = "Данные успешно обновлены"
-                return render(
-                    request, "add_or_change_proj.html", {"form": form, "answer": answer}
-                )
-        if request.method == "GET":
-            form = CreateProjectForm(instance=project)
-            return render(request, "add_or_change_proj.html", {"form": form})
-    except Projects.DoesNotExist:
-        return HttpResponseNotFound("<h1>Проект не найден</h1>")
+    if not request.user.is_anonymous:
+        try:
+            project = Projects.objects.get(id=id)
+            if request.method == "POST":
+                form = CreateProjectForm(request.POST, instance=project)
+                if form.is_valid():
+                    form.save()
+                    answer = "Данные успешно обновлены"
+                    return render(
+                        request, "add_or_change_proj.html", {"form": form, "answer": answer}
+                    )
+            if request.method == "GET":
+                form = CreateProjectForm(instance=project)
+                return render(request, "add_or_change_proj.html", {"form": form})
+        except Projects.DoesNotExist:
+            return HttpResponseNotFound("<h1 styles='text-align:center'> Проект не найден </h1>")
+    else:
+        return redirect('add_or_change_proj')
 
 
 def delete_proj(request, id):
-    try:
-        project = Projects.objects.get(id=id)
-        project.delete()
-        return redirect("view_proj")
-    except Projects.DoesNotExist:
-        return HttpResponseNotFound("<h1>Проект не найден</h1>")
+    if not request.user.is_anonymous:
+        try:
+            project = Projects.objects.get(id=id)
+            project.delete()
+            return redirect("view_proj")
+        except Projects.DoesNotExist:
+            return HttpResponseNotFound("<h1 styles='text-align:center'>Проект не найден</h1>")
+    else:
+        return redirect('add_or_change')
 
 
 def analytics_proj(request):
-    if request.method == "POST":
-        form = ChooseValuesForm(request.POST)
-        current_user = request.user.last_name + " " + request.user.first_name
+    if not request.user.is_anonymous:
+        if request.method == "POST":
+            form = ChooseValuesForm(request.POST)
+            current_user = request.user.last_name + " " + request.user.first_name
+            if form.is_valid():
+                month = form.cleaned_data["month"]
+                year = form.cleaned_data["year"]
+                (
+                    project_val,
+                    project_end_data,
+                    projects,
+                    project_day,
+                    project_color,
+                    project_symbol,
+                ) = get_projects_data(month, year, current_user)
+                graph = create_graph(
+                    project_day, project_val, project_symbol, project_color, month
+                )
+                completed_projects_num = projects.filter(
+                    perfomance_status="Выполнен"
+                ).count()
+                not_completed_projects_num = projects.filter(
+                    perfomance_status="Не выполнен"
+                ).count()
+                rejected_projects_num = projects.filter(
+                    perfomance_status="Отклонен"
+                ).count()
 
-        if form.is_valid():
-            month = form.cleaned_data["month"]
-            year = form.cleaned_data["year"]
-            (
-                project_val,
-                project_end_data,
-                projects,
-                project_day,
-                project_color,
-                project_symbol,
-            ) = get_projects_data(month, year, current_user)
-            graph = create_graph(
-                project_day, project_val, project_symbol, project_color, month
-            )
-            completed_projects_num = projects.filter(
-                perfomance_status="Выполнен"
-            ).count()
-            not_completed_projects_num = projects.filter(
-                perfomance_status="Не выполнен"
-            ).count()
-            rejected_projects_num = projects.filter(
-                perfomance_status="Отклонен"
-            ).count()
-
-            pie_chart = create_pie_chart(
-                completed_projects_num,
-                not_completed_projects_num,
-                rejected_projects_num,
-            )
-            return render(
-                request,
-                "projects_analytics.html",
-                {
-                    "month": month,
-                    "year": year,
-                    "graph": graph,
-                    "form": form,
-                    "pie_chart": pie_chart,
-                },
-            )
-    else:
-        form = ChooseValuesForm()
-        return render(request, "projects_analytics.html", {"form": form})
+                pie_chart = create_pie_chart(
+                    completed_projects_num,
+                    not_completed_projects_num,
+                    rejected_projects_num,
+                )
+                return render(
+                    request,
+                    "projects_analytics.html",
+                    {
+                        "month": month,
+                        "year": year,
+                        "graph": graph,
+                        "form": form,
+                        "pie_chart": pie_chart,
+                    },
+                )
+        else:
+            form = ChooseValuesForm()
+            return render(request, "projects_analytics.html", {"form": form})
+    return redirect('add_or_change_proj')
 
 
 def get_projects_data(month, year, current_user):

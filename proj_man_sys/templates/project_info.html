@@ -20,7 +20,13 @@
   <p><span class ='p-color'>Дата начала:</span> {{project.start_date}}</p>
   <p><span class ='p-color'>Дата завершения:</span> {{project.end_date}}</p>
   <p><span class ='p-color'>Статус проекта:</span> {{project.perfomance_status}}</p>
-  <p><span class ='p-color'>Фактическая дата завершения:</span> {{project.perfomance_date}}</p>
+  <p><span class ='p-color'>Фактическая дата завершения:</span>
+     {% if project.perfomance_date %}
+     {{project.perfomance_date}}
+     {% else %}
+     -
+     {% endif %}
+    </p>
   <p><span class ='p-color'>Администратор проекта:</span> {{user.last_name}} {{user.first_name}} </p>
   <p><span class ='p-color'>Описание:</span> {{project.description}} </p>
 </div>

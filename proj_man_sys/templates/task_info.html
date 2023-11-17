@@ -14,7 +14,13 @@
   <p><span class ='p-color'>Статус задачи:</span> {{task.status}}</p>
   <p><span class ='p-color'>Приоритет задачи: </span>{{task.priority}}</p>
   <p><span class ='p-color'>Проект:</span> {{task.project}}</p>
-  <p><span class ='p-color'>Фактическая дата завершения:</span> {{task.perfomance_date}}</p>
+  <p><span class ='p-color'>Фактическая дата завершения:</span>
+    {% if task.perfomance_date%}
+    {{task.perfomance_date}}
+    {% else %}
+    -
+    {% endif %}
+  </p>
   <p><span class ='p-color'>Администратор проекта:</span> {{task.admin}} </p>
   
 </div>
