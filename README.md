@@ -6,4 +6,3 @@ It helps you to track status of projects and tasks and manage them.
 3. Instruction how to clone project from github and run it - https://www.geeksforgeeks.org/clone-and-run-a-django-project-from-github. Current python version - 3.10.4;
 All requirements are provided.
 
-4.
